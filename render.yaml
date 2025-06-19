@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: koech-labs-landing
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    domains:
+      - koechlabs.com
+    healthCheck:
+      path: /
+      delaySeconds: 30
+    autoDeploy: true
+    branch: main 
