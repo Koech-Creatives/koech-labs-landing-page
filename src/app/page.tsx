@@ -5,8 +5,9 @@ import Link from "next/link";
 
 export default function Home() {
   const handleTryNow = () => {
-    // Render deployment URL for Frames app
-    window.open('https://frames.koechlabs.com', '_blank');
+    // Use environment variable for Frames app URL
+    const framesUrl = process.env.NEXT_PUBLIC_FRAMES_URL || 'https://frames-koech-labs.com';
+    window.open(framesUrl, '_blank');
   };
 
   return (

@@ -70,13 +70,23 @@ const handleTryNow = () => {
 
 ## 🔧 Customization
 
+### Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```bash
+# URL for the Frames application
+NEXT_PUBLIC_FRAMES_URL=https://frames-koech-labs.com
+```
+
 ### Update Canvas App URL
-In `src/app/page.tsx`, update the URL in the `handleTryNow` function:
+The app now uses environment variables. Set `NEXT_PUBLIC_FRAMES_URL` in your deployment environment or `.env.local` file:
 
 ```javascript
 const handleTryNow = () => {
-  // Replace with your actual canvas app URL
-  window.open('https://your-canvas-app-domain.com', '_blank');
+  // Uses environment variable with fallback
+  const framesUrl = process.env.NEXT_PUBLIC_FRAMES_URL || 'https://frames-koech-labs.com';
+  window.open(framesUrl, '_blank');
 };
 ```
 
