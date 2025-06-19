@@ -7,7 +7,7 @@ export default function Home() {
   const handleTryNow = () => {
     // Use environment variable for Frames app URL
     const framesUrl = process.env.NEXT_PUBLIC_FRAMES_URL || 'https://frames-koech-labs.com';
-    window.open(framesUrl, '_blank');
+    window.location.href = framesUrl;
   };
 
   return (
