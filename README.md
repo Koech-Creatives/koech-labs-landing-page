@@ -76,7 +76,7 @@ Create a `.env.local` file in the root directory:
 
 ```bash
 # URL for the Frames application
-NEXT_PUBLIC_FRAMES_URL=https://frames-koech-labs.com
+NEXT_PUBLIC_FRAMES_URL=https://frames-koech-labs.onrender.com
 ```
 
 ### Update Canvas App URL
@@ -85,7 +85,7 @@ The app now uses environment variables. Set `NEXT_PUBLIC_FRAMES_URL` in your dep
 ```javascript
 const handleTryNow = () => {
   // Uses environment variable with fallback
-  const framesUrl = process.env.NEXT_PUBLIC_FRAMES_URL || 'https://frames-koech-labs.com';
+  const framesUrl = process.env.NEXT_PUBLIC_FRAMES_URL || 'https://frames-koech-labs.onrender.com';
   window.open(framesUrl, '_blank');
 };
 ```
