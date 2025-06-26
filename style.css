@@ -1,0 +1,910 @@
+/* Variables */
+:root {
+    --bg-dark: #002e51;
+    --accent: #ff4940;
+    --text-light: #ffffff;
+    --text-muted: #a0a0a0;
+    --card-bg: #1a1a1a;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s ease-in-out;
+}
+
+/* General Body Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    margin: 0;
+    padding: 0;
+    zoom: 0.8;
+    -moz-transform: scale(0.8);
+    -moz-transform-origin: 0 0;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Grid Background */
+.grid-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+h1, h2, h3 {
+    color: var(--text-light);
+    margin: 0;
+}
+
+h1 {
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+h1 .accent {
+    color: var(--accent);
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+section {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Header and Navigation */
+.main-header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 1000px;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+    background-color: rgba(40, 40, 50, 0.2);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text-light);
+}
+
+.logo-img {
+    height: 36px;
+    width: auto;
+}
+
+.by-text {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-left: 0.5rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+    padding: 0rem 0rem;
+    border-radius: 20px;
+}
+
+.nav-links a:hover {
+    color: white;
+    background-color: rgba(255, 73, 64, 0.7); /* Lighter version of accent color */
+}
+
+.nav-links a::after {
+    display: none;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    display: none;
+}
+
+.nav-links a.active {
+    color: white;
+    background-color: var(--accent);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+}
+
+.try-now-button {
+    background-color: var(--accent);
+    color: var(--text-light);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.try-now-button:hover {
+    background-color: #e03a32;
+    transform: scale(1.05);
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.mobile-menu-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-light);
+    margin: 5px 0;
+    transition: var(--transition);
+}
+
+.mobile-menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 6px);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -6px);
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-top: 120px;
+    overflow: hidden;
+}
+
+.waitlist-badge {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.badge-dots {
+    display: flex;
+    align-items: center;
+    margin-right: 0.8rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin-right: 4px;
+}
+
+.dot.active {
+    background-color: var(--accent);
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 800px;
+    position: relative;
+    z-index: 10;
+}
+
+.hero-content .subheadline {
+    font-size: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: var(--text-muted);
+}
+
+.social-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.social-icons .icon {
+    position: absolute;
+    opacity: 0;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.2);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, color 0.5s ease-in-out;
+    transform: scale(0.9) rotate(0deg);
+}
+
+.cta-button {
+    background-color: var(--accent);
+    color: var(--text-light);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    display: inline-block;
+}
+
+.cta-button:hover {
+    background-color: #e03a32;
+    transform: scale(1.05);
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+/* Mockup Cards */
+.mockup-container {
+    margin-top: 4rem;
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mockup-cards {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    perspective: 1000px;
+}
+
+.mockup-card {
+    position: absolute;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+    transform-origin: center center;
+}
+
+/* Post images styling */
+.post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+}
+
+.mockup-content {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Instagram Card - Square format */
+#card1 {
+    width: 280px;
+    height: 400px;
+    top: 50%;
+    left: 15%;
+    transform: translate(-50%, -50%) rotate(-8deg);
+    z-index: 5;
+}
+
+#card1 .mockup-content {
+    height: 280px;
+    padding: 0;
+    margin: 0;
+}
+
+/* Twitter Card - Landscape format */
+#card2 {
+    width: 320px;
+    height: 380px;
+    top: 40%;
+    left: 35%;
+    transform: translate(-50%, -50%) rotate(5deg);
+    z-index: 4;
+}
+
+#card2 .twitter-img-container {
+    height: 280px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* LinkedIn Card - Wide landscape format */
+#card3 {
+    width: 340px;
+    height: 380px;
+    top: 55%;
+    left: 55%;
+    transform: translate(-50%, -50%) rotate(-3deg);
+    z-index: 3;
+}
+
+#card3 .linkedin-img-container {
+    height: 280px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* TikTok Card - Vertical format */
+#card4 {
+    width: 220px;
+    height: 400px;
+    top: 45%;
+    left: 75%;
+    transform: translate(-50%, -50%) rotate(10deg);
+    z-index: 2;
+}
+
+#card4 .tiktok-video-container {
+    height: 320px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* Facebook Card - Landscape format */
+#card5 {
+    width: 300px;
+    height: 380px;
+    top: 30%;
+    left: 90%;
+    transform: translate(-50%, -50%) rotate(-5deg);
+    z-index: 1;
+}
+
+#card5 .facebook-img-container {
+    height: 280px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.mockup-card:hover {
+    transform: translate(-50%, -50%) scale(1.05) rotate(0deg) !important;
+    z-index: 10 !important;
+}
+
+/* Mockup Headers */
+.mockup-header {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #efefef;
+}
+
+.profile-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Instagram specific */
+.instagram-text {
+    font-weight: 600;
+    font-size: 14px;
+    flex-grow: 1;
+}
+
+.dots-menu {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Twitter specific */
+.twitter-header {
+    padding: 10px;
+}
+
+.twitter-info {
+    flex-grow: 1;
+}
+
+.twitter-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.twitter-handle {
+    font-size: 12px;
+    color: #657786;
+}
+
+.twitter-logo {
+    color: #1DA1F2;
+}
+
+.twitter-text {
+    font-size: 14px;
+    padding: 10px;
+    margin: 0;
+}
+
+/* LinkedIn specific */
+.linkedin-header {
+    padding: 10px;
+}
+
+.linkedin-info {
+    flex-grow: 1;
+}
+
+.linkedin-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.linkedin-meta {
+    font-size: 12px;
+    color: #666;
+}
+
+.linkedin-logo {
+    color: #0077B5;
+}
+
+.linkedin-text {
+    font-size: 13px;
+    padding: 10px;
+    margin: 0;
+}
+
+/* TikTok specific */
+.tiktok-header {
+    padding: 10px;
+}
+
+.tiktok-info {
+    flex-grow: 1;
+}
+
+.tiktok-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.tiktok-caption {
+    font-size: 12px;
+    color: #666;
+}
+
+.tiktok-logo {
+    color: #000;
+}
+
+.tiktok-overlay {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tiktok-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.tiktok-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-size: 12px;
+}
+
+.tiktok-action i {
+    font-size: 20px;
+    margin-bottom: 3px;
+}
+
+/* Facebook specific */
+.facebook-header {
+    padding: 10px;
+}
+
+.facebook-info {
+    flex-grow: 1;
+}
+
+.facebook-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.facebook-time {
+    font-size: 12px;
+    color: #65676B;
+}
+
+.facebook-logo {
+    color: #1877F2;
+}
+
+.facebook-text {
+    font-size: 13px;
+    padding: 10px;
+    margin: 0;
+}
+
+/* Mockup footers */
+.mockup-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+}
+
+.mockup-icons {
+    display: flex;
+    gap: 12px;
+}
+
+.mockup-icons i, .mockup-footer i {
+    font-size: 16px;
+}
+
+.mockup-caption {
+    padding: 0 10px 10px;
+    font-size: 12px;
+}
+
+/* Stats for different platforms */
+.twitter-stats, .linkedin-stats, .facebook-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: #666;
+}
+
+.twitter-stats i, .linkedin-stats i, .facebook-stats i {
+    margin-right: 4px;
+}
+
+/* Platform Icons Section */
+.platform-icons {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.platform-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.platform-icon:hover {
+    color: var(--accent);
+    transform: scale(1.2);
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center;
+    background-color: rgba(255, 73, 64, 0.1);
+    border-radius: 20px;
+    padding: 4rem 2rem;
+    margin-top: 4rem;
+}
+
+.cta-section h2 {
+    margin-bottom: 1.5rem;
+}
+
+.cta-section .cta-button {
+    margin: 1.5rem 0;
+}
+
+.cta-section p {
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4rem;
+}
+
+/* Image containers */
+.twitter-img-container,
+.linkedin-img-container,
+.facebook-img-container {
+    position: relative;
+    width: 100%;
+}
+
+.twitter-img-container .hidden-text {
+    bottom: 10%;
+}
+
+.linkedin-img-container .hidden-text {
+    bottom: 12%;
+}
+
+.facebook-img-container .hidden-text {
+    bottom: 10%;
+}
+
+/* Adjust the position of the red label for containers */
+.twitter-img-container .post-image::before {
+    bottom: 25%;
+}
+
+.linkedin-img-container .post-image::before {
+    bottom: 30%;
+}
+
+.facebook-img-container .post-image::before {
+    bottom: 25%;
+}
+
+/* Function to update card positions based on screen size */
+@media (max-width: 1400px) {
+    .mockup-container {
+        transform: scale(0.9);
+    }
+    
+    #card1 {
+        left: 20%;
+    }
+    
+    #card2 {
+        left: 40%;
+    }
+    
+    #card3 {
+        left: 60%;
+    }
+    
+    #card4 {
+        left: 80%;
+    }
+    
+    #card5 {
+        left: 85%;
+        top: 25%;
+    }
+}
+
+@media (max-width: 992px) {
+    .mockup-container {
+        transform: scale(0.8);
+        height: 700px;
+        flex-wrap: wrap;
+    }
+    
+    #card1 {
+        left: 25%;
+        top: 30%;
+    }
+    
+    #card2 {
+        left: 50%;
+        top: 30%;
+    }
+    
+    #card3 {
+        left: 75%;
+        top: 30%;
+    }
+    
+    #card4 {
+        left: 35%;
+        top: 70%;
+    }
+    
+    #card5 {
+        left: 65%;
+        top: 70%;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        zoom: 1;
+        -moz-transform: none;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    .navbar {
+        padding: 0.8rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .try-now-button {
+        display: none;
+    }
+
+    .mockup-container {
+        transform: scale(0.7);
+        margin-top: 2rem;
+        height: 800px;
+    }
+    
+    #card1 {
+        top: 25%;
+        left: 30%;
+    }
+    
+    #card2 {
+        top: 25%;
+        left: 70%;
+    }
+    
+    #card3 {
+        top: 50%;
+        left: 30%;
+    }
+    
+    #card4 {
+        top: 50%;
+        left: 70%;
+        height: 360px;
+    }
+    
+    #card5 {
+        top: 75%;
+        left: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-content .subheadline {
+        font-size: 1.2rem;
+    }
+
+    .mockup-container {
+        transform: scale(0.6);
+        margin-top: 1rem;
+        height: 900px;
+    }
+    
+    #card1, #card2, #card3, #card4, #card5 {
+        left: 50%;
+    }
+    
+    #card1 {
+        top: 15%;
+    }
+    
+    #card2 {
+        top: 35%;
+    }
+    
+    #card3 {
+        top: 55%;
+    }
+    
+    #card4 {
+        top: 75%;
+    }
+    
+    #card5 {
+        top: 95%;
+    }
+    
+    .platform-icons .icon-container {
+        gap: 1rem;
+    }
+} 
