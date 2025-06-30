@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Content Template</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #002e51;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        .post-container {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            background-color: #002e51;
+            overflow: hidden;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .profile-info {
+            margin-left: 15px;
+        }
+        .profile-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .profile-handle {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        .post-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100% - 80px);
+        }
+        .lightbulb {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 40px;
+        }
+        .post-title {
+            font-size: 54px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+        .highlight-badge {
+            background-color: #ff4940;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .post-subtitle {
+            font-size: 22px;
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        .post-footer {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+        .footer-text {
+            font-size: 36px;
+            font-weight: 700;
+            opacity: 0.3;
+            text-transform: uppercase;
+        }
+        .swipe-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .swipe-arrow {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <div class="post-header">
+            <img src="../logo.svg" class="profile-img" alt="Koech Creatives">
+            <div class="profile-info">
+                <div class="profile-name">Koech Creatives</div>
+                <div class="profile-handle">@koech.creatives</div>
+            </div>
+        </div>
+        <div class="post-content">
+            <img src="lightbulb.png" class="lightbulb" alt="Lightbulb">
+            <h1 class="post-title">Transform Your<br>Business with<br>Koech Labs<br>Today</h1>
+            <div class="highlight-badge">A complete guide to ship a product</div>
+            <p class="post-subtitle">Uncover the hidden pitfalls sabotaging<br>your success</p>
+        </div>
+        <div class="post-footer">
+            <div class="footer-text">SMART STARTUPS</div>
+            <div class="swipe-button">
+                Swipe <span class="swipe-arrow">←</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

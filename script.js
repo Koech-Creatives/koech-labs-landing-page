@@ -2,11 +2,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('.nav-links a, .cta-button[href^="#"]');
 
+    // Function to set active navigation link
+    const setActiveLink = (clickedLink) => {
+        // Remove active class from all links
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+        });
+        // Add active class to clicked link
+        clickedLink.classList.add('active');
+    };
+
+    // Handle navigation link clicks for both scrolling and active state
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
+            
+            // Set this link as active
+            setActiveLink(this);
+            
+            // Handle Home link (# href)
+            if (targetId === '#') {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                return;
+            }
             
             const targetElement = document.querySelector(targetId);
 
@@ -17,6 +39,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Set active link based on scroll position
+    const sections = document.querySelectorAll('section[id]');
+    
+    const setActiveNavOnScroll = () => {
+        let scrollPosition = window.scrollY;
+        
+        // First check if we're at the top (or near top) of the page
+        if (scrollPosition < 200) {
+            // We're at the top, set "Home" as active
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === '#') {
+                    setActiveLink(link);
+                }
+            });
+            return;
+        }
+        
+        // Otherwise check which section we're in
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100; // Add some offset for better UX
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                // Find the corresponding nav link and activate it
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === '#' + sectionId) {
+                        setActiveLink(link);
+                    }
+                });
+            }
+        });
+    };
+    
+    // Call on scroll and on page load
+    window.addEventListener('scroll', setActiveNavOnScroll);
+    window.addEventListener('load', setActiveNavOnScroll);
 
     // Mobile menu toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -33,16 +93,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const socialIcons = document.querySelectorAll('.social-icons .icon');
     const heroSection = document.querySelector('.hero-section');
     
-    // Position icons randomly with random rotation
-    socialIcons.forEach(icon => {
-        const xPercent = icon.getAttribute('data-x');
-        const yPercent = icon.getAttribute('data-y');
-        const randomRotation = Math.floor(Math.random() * 60) - 30; // Random rotation between -30 and 30 degrees
+    // Function to ensure icons are not clustered in the center
+    const redistributeIcons = () => {
+        // Get hero content dimensions to create buffer zone
+        const heroContent = document.querySelector('.hero-content h1');
+        const subHeadline = document.querySelector('.hero-content .subheadline');
         
-        icon.style.left = `${xPercent}%`;
-        icon.style.top = `${yPercent}%`;
-        icon.style.transform = `scale(0.9) rotate(${randomRotation}deg)`;
-    });
+        if (!heroContent || !heroSection) return;
+        
+        const heroRect = heroSection.getBoundingClientRect();
+        const heroContentRect = heroContent.getBoundingClientRect();
+        
+        // Calculate the center and buffer zone
+        const centerX = 50; // Center of the container (percentage)
+        const centerY = 50; // Center of the container (percentage)
+        const bufferRadiusX = 25; // Horizontal buffer percentage
+        const bufferRadiusY = 30; // Vertical buffer percentage (slightly larger to account for headline)
+        
+        // Adjust each icon position to avoid the center
+        socialIcons.forEach(icon => {
+            let xPercent = parseInt(icon.getAttribute('data-x'));
+            let yPercent = parseInt(icon.getAttribute('data-y'));
+            
+            // Check if icon is in the buffer zone
+            const distanceX = Math.abs(xPercent - centerX);
+            const distanceY = Math.abs(yPercent - centerY);
+            
+            // If icon is too close to center horizontally
+            if (distanceX < bufferRadiusX) {
+                // Push it away from center
+                if (xPercent < centerX) {
+                    xPercent = centerX - bufferRadiusX - Math.random() * 10;
+                } else {
+                    xPercent = centerX + bufferRadiusX + Math.random() * 10;
+                }
+            }
+            
+            // If icon is too close to center vertically
+            if (distanceY < bufferRadiusY) {
+                // Push it away from center
+                if (yPercent < centerY) {
+                    yPercent = centerY - bufferRadiusY - Math.random() * 10;
+                } else {
+                    yPercent = centerY + bufferRadiusY + Math.random() * 10;
+                }
+            }
+            
+            // Ensure values stay within bounds (5-95%)
+            xPercent = Math.max(5, Math.min(95, xPercent));
+            yPercent = Math.max(5, Math.min(95, yPercent));
+            
+            // Apply updated positions
+            icon.setAttribute('data-x', xPercent.toString());
+            icon.setAttribute('data-y', yPercent.toString());
+            
+            // More varied random rotation between -45 and 45 degrees
+            const randomRotation = Math.floor(Math.random() * 90) - 45;
+            
+            icon.style.left = `${xPercent}%`;
+            icon.style.top = `${yPercent}%`;
+            icon.style.transform = `scale(0.9) rotate(${randomRotation}deg)`;
+        });
+    };
+    
+    // Call the redistribution function
+    redistributeIcons();
     
     // Handle mouse movement for icon hover effect
     heroSection.addEventListener('mousemove', (e) => {
@@ -50,40 +165,72 @@ document.addEventListener('DOMContentLoaded', () => {
         const mouseX = e.clientX - heroRect.left;
         const mouseY = e.clientY - heroRect.top;
         
+        // Get center of hero content for buffer calculation
+        const heroContent = document.querySelector('.hero-content h1');
+        const heroContentRect = heroContent.getBoundingClientRect();
+        const centerX = (heroContentRect.left + heroContentRect.right) / 2 - heroRect.left;
+        const centerY = (heroContentRect.top + heroContentRect.bottom) / 2 - heroRect.top;
+        
         socialIcons.forEach(icon => {
             const iconRect = icon.getBoundingClientRect();
             const iconX = (iconRect.left - heroRect.left) + iconRect.width / 2;
             const iconY = (iconRect.top - heroRect.top) + iconRect.height / 2;
             
             // Calculate distance between mouse and icon
-            const distance = Math.sqrt(
+            const distanceToMouse = Math.sqrt(
                 Math.pow(mouseX - iconX, 2) + 
                 Math.pow(mouseY - iconY, 2)
             );
             
-            // Set maximum distance for hover effect (in pixels)
-            const maxDistance = 150;
+            // Calculate distance to hero text center to create a buffer zone
+            const distanceToCenter = Math.sqrt(
+                Math.pow(centerX - iconX, 2) + 
+                Math.pow(centerY - iconY, 2)
+            );
             
-            if (distance < maxDistance) {
-                // Calculate opacity based on distance (closer = more opaque)
-                const opacity = Math.min(0.8, (1 - distance / maxDistance) * 0.8);
-                icon.style.opacity = opacity;
+            // Set maximum distance for hover effect (in pixels)
+            const maxDistance = 200;
+            const minDistanceToCenter = 150; // Buffer around center
+            
+            // Skip icons that are too close to the hero text
+            if (distanceToCenter < minDistanceToCenter) {
+                icon.style.opacity = 0;
+                return;
+            }
+            
+            if (distanceToMouse < maxDistance) {
+                // Calculate intensity based on distance (closer = more intense)
+                const intensity = 1 - (distanceToMouse / maxDistance);
                 
-                // Scale up slightly when closer
-                const scale = 0.9 + ((1 - distance / maxDistance) * 0.3);
-                const currentRotation = icon.style.transform.match(/rotate\(([^)]+)\)/)[1];
+                // Get the current rotation from transform style
+                const currentTransform = icon.style.transform;
+                const rotationMatch = currentTransform.match(/rotate\(([^)]+)\)/);
+                const currentRotation = rotationMatch ? rotationMatch[1] : "0deg";
+                
+                // Add hovered class when close enough
+                if (intensity > 0.3) {
+                    icon.classList.add('hovered');
+                } else {
+                    icon.classList.remove('hovered');
+                    // Set opacity based on distance
+                    icon.style.opacity = 0.15 + (intensity * 0.65);
+                }
+                
+                // Scale based on proximity
+                const scale = 0.9 + (intensity * 0.5);
                 icon.style.transform = `scale(${scale}) rotate(${currentRotation})`;
                 
-                // Change color based on proximity
-                if (opacity > 0.5) {
-                    icon.style.color = `rgba(255, 73, 64, ${opacity})`;
-                } else {
-                    icon.style.color = `rgba(255, 255, 255, ${opacity})`;
-                }
             } else {
-                // Hide icon when mouse is far away
-                icon.style.opacity = 0;
-                icon.style.transform = `scale(0.9) rotate(${icon.style.transform.match(/rotate\(([^)]+)\)/)[1]})`;
+                // Reset icon when mouse is far away
+                icon.classList.remove('hovered');
+                icon.style.opacity = 0.15;
+                
+                // Get the current rotation to preserve it
+                const currentTransform = icon.style.transform;
+                const rotationMatch = currentTransform.match(/rotate\(([^)]+)\)/);
+                const currentRotation = rotationMatch ? rotationMatch[1] : "0deg";
+                
+                icon.style.transform = `scale(0.9) rotate(${currentRotation})`;
             }
         });
     });
@@ -91,8 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset icons when mouse leaves hero section
     heroSection.addEventListener('mouseleave', () => {
         socialIcons.forEach(icon => {
-            icon.style.opacity = 0;
-            const currentRotation = icon.style.transform.match(/rotate\(([^)]+)\)/)[1];
+            icon.classList.remove('hovered');
+            icon.style.opacity = 0.15;
+            
+            // Get the current rotation to preserve it
+            const currentTransform = icon.style.transform;
+            const rotationMatch = currentTransform.match(/rotate\(([^)]+)\)/);
+            const currentRotation = rotationMatch ? rotationMatch[1] : "0deg";
+            
             icon.style.transform = `scale(0.9) rotate(${currentRotation})`;
         });
     });
@@ -108,6 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     mockupCards.forEach(card => {
         card.addEventListener('mouseover', () => {
+            // Skip hover effects on mobile
+            if (window.innerWidth <= 768) return;
+            
             mockupCards.forEach(c => {
                 if (c !== card) {
                     c.style.opacity = '0.7';
@@ -142,10 +298,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         card.addEventListener('mouseout', () => {
+            // Skip reset on mobile
+            if (window.innerWidth <= 768) return;
+            
             mockupCards.forEach(c => {
                 c.style.opacity = '1';
                 // Reset to original transform
                 c.style.transform = originalTransforms[c.id];
+            });
+        });
+        
+        // Add touch events for mobile
+        card.addEventListener('touchstart', () => {
+            if (window.innerWidth > 768) return;
+            
+            // Add active class to the touched card
+            card.classList.add('touch-active');
+            
+            // Slightly reduce opacity of other cards
+            mockupCards.forEach(c => {
+                if (c !== card) {
+                    c.style.opacity = '0.7';
+                }
+            });
+        });
+        
+        card.addEventListener('touchend', () => {
+            if (window.innerWidth > 768) return;
+            
+            // Remove active class after a short delay
+            setTimeout(() => {
+                card.classList.remove('touch-active');
+            }, 300);
+            
+            // Reset opacity of all cards
+            mockupCards.forEach(c => {
+                c.style.opacity = '1';
             });
         });
     });
@@ -157,22 +345,63 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const containerWidth = container.offsetWidth;
         
-        // Only adjust if we're on larger screens
-        if (window.innerWidth > 1400) {
+        if (window.innerWidth <= 768) {
+            // Mobile view - reset all position styles and let CSS flexbox handle it
+            const cards = document.querySelectorAll('.mockup-card');
+            cards.forEach(card => {
+                card.style.position = "relative";
+                card.style.top = "auto";
+                card.style.left = "auto";
+                card.style.transform = "none";
+            });
+        } else if (window.innerWidth > 1400) {
             // Adjust card positions for extra large screens
+            const cards = document.querySelectorAll('.mockup-card');
+            cards.forEach(card => {
+                card.style.position = "absolute";
+            });
             document.getElementById('card1').style.left = '15%';
+            document.getElementById('card1').style.top = '25%';
             document.getElementById('card2').style.left = '35%';
+            document.getElementById('card2').style.top = '25%';
             document.getElementById('card3').style.left = '55%';
+            document.getElementById('card3').style.top = '50%';
             document.getElementById('card4').style.left = '75%';
+            document.getElementById('card4').style.top = '50%';
             document.getElementById('card5').style.left = '90%';
+            document.getElementById('card5').style.top = '75%';
         } else if (window.innerWidth > 992) {
             // Adjust card positions for large screens
+            const cards = document.querySelectorAll('.mockup-card');
+            cards.forEach(card => {
+                card.style.position = "absolute";
+            });
             document.getElementById('card1').style.left = '20%';
+            document.getElementById('card1').style.top = '25%';
             document.getElementById('card2').style.left = '40%';
+            document.getElementById('card2').style.top = '25%';
             document.getElementById('card3').style.left = '60%';
+            document.getElementById('card3').style.top = '50%';
             document.getElementById('card4').style.left = '80%';
+            document.getElementById('card4').style.top = '50%';
             document.getElementById('card5').style.left = '85%';
             document.getElementById('card5').style.top = '25%';
+        } else {
+            // Default for medium screens
+            const cards = document.querySelectorAll('.mockup-card');
+            cards.forEach(card => {
+                card.style.position = "absolute";
+            });
+            document.getElementById('card1').style.left = '30%';
+            document.getElementById('card1').style.top = '25%';
+            document.getElementById('card2').style.left = '70%';
+            document.getElementById('card2').style.top = '25%';
+            document.getElementById('card3').style.left = '30%';
+            document.getElementById('card3').style.top = '50%';
+            document.getElementById('card4').style.left = '70%';
+            document.getElementById('card4').style.top = '50%';
+            document.getElementById('card5').style.left = '50%';
+            document.getElementById('card5').style.top = '75%';
         }
     };
     
