@@ -4,6 +4,10 @@ services:
     env: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
+    # This is a static site, so we don't need a startCommand
+    envVars:
+      - key: NODE_VERSION
+        value: 16
     routes:
       - type: rewrite
         source: /*

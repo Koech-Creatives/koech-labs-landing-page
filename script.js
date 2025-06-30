@@ -554,4 +554,78 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    // Waitlist form submission
+    window.submitWaitlist = function(event) {
+        event.preventDefault();
+        
+        const emailInput = document.getElementById('waitlist-email');
+        const email = emailInput.value.trim();
+        
+        if (!email) {
+            alert('Please enter your email address');
+            return false;
+        }
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('Please enter a valid email address');
+            return false;
+        }
+        
+        // Send the email to n8n webhook
+        const n8nWebhookUrl = 'https://your-n8n-instance.com/webhook/waitlist'; // Replace with your actual n8n webhook URL
+        
+        // Show loading state
+        const waitlistButton = document.querySelector('.waitlist-button');
+        const originalButtonText = waitlistButton.innerHTML;
+        waitlistButton.disabled = true;
+        waitlistButton.innerHTML = 'Submitting...';
+        
+        fetch(n8nWebhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                source: 'koech-labs-landing',
+                timestamp: new Date().toISOString()
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Hide the form
+            const waitlistForm = document.getElementById('waitlist-form');
+            const formParent = waitlistForm.parentElement;
+            
+            waitlistForm.style.display = 'none';
+            
+            // Create and show the success message
+            const successMessage = document.createElement('div');
+            successMessage.className = 'waitlist-success';
+            successMessage.innerHTML = `
+                <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>You're on the list!</h3>
+                <p>We'll notify you when Koech Labs launches.</p>
+            `;
+            
+            formParent.appendChild(successMessage);
+            console.log('Waitlist signup successful:', email);
+        })
+        .catch(error => {
+            console.error('Error submitting waitlist form:', error);
+            waitlistButton.disabled = false;
+            waitlistButton.innerHTML = originalButtonText;
+            alert('There was an error submitting your email. Please try again.');
+        });
+        
+        return false;
+    };
 }); 

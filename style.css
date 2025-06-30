@@ -25,6 +25,14 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, div {
     --card-bg: #1a1a1a;
     --shadow-color: rgba(0, 0, 0, 0.2);
     --transition: all 0.3s ease-in-out;
+    
+    /* Glass effect variables */
+    --glass-bg-color: rgba(30, 30, 40, 0.2);
+    --glass-border-color: rgba(255, 255, 255, 0.05);
+    --glass-blur: blur(15px);
+    --glass-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    --glass-hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    --glass-hover-border: var(--accent);
 }
 
 /* General Body Styles */
@@ -40,6 +48,32 @@ body {
     -moz-transform-origin: 0 0;
     overflow-x: hidden;
     position: relative;
+}
+
+/* Glass Effect - Common styling for glass-like elements */
+.glass-effect {
+    background-color: var(--glass-bg-color);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border-color);
+    box-shadow: var(--glass-shadow);
+}
+
+.glass-effect:hover {
+    box-shadow: var(--glass-hover-shadow);
+    border-color: var(--glass-hover-border);
+}
+
+/* Glass utility class for direct HTML application */
+.glass {
+    background-color: var(--glass-bg-color) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    border: 1px solid var(--glass-border-color) !important;
+    box-shadow: var(--glass-shadow) !important;
+    transition: var(--transition);
+}
+
+.glass:hover {
+    box-shadow: var(--glass-hover-shadow) !important;
 }
 
 /* Grid Background */
@@ -128,11 +162,11 @@ section {
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 0.5rem;
-    background-color: rgba(40, 40, 50, 0.2);
     border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: var(--glass-bg-color);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border-color);
+    box-shadow: var(--glass-shadow);
 }
 
 
@@ -365,6 +399,137 @@ section {
     transform: scale(1.05);
     color: var(--text-light);
     text-decoration: none;
+}
+
+/* Waitlist Container */
+.waitlist-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Waitlist Form */
+.waitlist-form {
+    margin: 0;
+    padding: 2rem;
+    border-radius: 25px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    background-color: var(--glass-bg-color);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--glass-shadow);
+}
+
+.waitlist-form h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.waitlist-form form {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+#waitlist-email {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 400;
+    outline: none;
+    transition: var(--transition);
+}
+
+#waitlist-email::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+#waitlist-email:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(255, 73, 64, 0.3);
+}
+
+.waitlist-button {
+    background-color: var(--text-light);
+    color: var(--bg-dark);
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.waitlist-button:hover {
+    background-color: var(--accent);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+.waitlist-success {
+    padding: 2rem;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.waitlist-success .success-icon {
+    font-size: 3rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.waitlist-success h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+.waitlist-success p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 576px) {
+    .waitlist-form {
+        padding: 1.5rem;
+    }
+    
+    .waitlist-form h2 {
+        font-size: 2rem;
+        text-align: center;
+    }
+    
+    .waitlist-form form {
+        flex-direction: column;
+    }
+    
+    #waitlist-email {
+        width: 100%;
+    }
+    
+    .waitlist-button {
+        width: 100%;
+    }
 }
 
 /* Mockup Cards */
@@ -903,7 +1068,7 @@ section {
     transform: translateX(-50%);
     width: 60%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 73, 64, 0.5), transparent);
+    /* background: linear-gradient(90deg, transparent, rgba(255, 73, 64, 0.5), transparent); */
 }
 
 /* Enhanced CTA Section */
@@ -1239,7 +1404,6 @@ footer {
 }
 
 .pain-point-card {
-    background-color: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     padding: 2rem;
     width: calc(33.33% - 2rem);
@@ -1249,15 +1413,16 @@ footer {
     align-items: center;
     text-align: center;
     transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: var(--glass-bg-color);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border-color);
+    box-shadow: var(--glass-shadow);
 }
 
 .pain-point-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent);
+    box-shadow: var(--glass-hover-shadow);
+    border-color: var(--glass-hover-border);
 }
 
 .pain-point-icon {
@@ -1296,7 +1461,6 @@ footer {
 }
 
 .benefit-card {
-    background-color: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     padding: 2rem;
     width: calc(25% - 2rem);
@@ -1306,15 +1470,16 @@ footer {
     align-items: center;
     text-align: center;
     transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: var(--glass-bg-color);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border-color);
+    box-shadow: var(--glass-shadow);
 }
 
 .benefit-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent);
+    box-shadow: var(--glass-hover-shadow);
+    border-color: var(--glass-hover-border);
 }
 
 .benefit-icon {
@@ -1364,19 +1529,19 @@ footer {
     display: flex;
     gap: 2rem;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     padding: 2rem;
     transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: var(--glass-bg-color);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border-color);
+    box-shadow: var(--glass-shadow);
 }
 
 .workflow-step:hover {
     transform: translateX(10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent);
+    box-shadow: var(--glass-hover-shadow);
+    border-color: var(--glass-hover-border);
 }
 
 .step-number {
@@ -1732,5 +1897,116 @@ main {
     #card4 {
         width: 300px;
         height: 540px;
+    }
+}
+
+/* Members Badge */
+.members-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    padding: 8px 12px;
+    margin-bottom: 3rem;
+    max-width: 400px;
+    min-width: 300px;
+    background-color: var(--glass-bg-color);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.member-avatars {
+    display: flex;
+    margin-right: 12px;
+}
+
+.member-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    object-fit: cover;
+    margin-right: -12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.member-avatar:hover {
+    transform: translateY(-2px) scale(1.1);
+    z-index: 2;
+}
+
+.member-avatar:nth-child(1) {
+    z-index: 3;
+}
+
+.member-avatar:nth-child(2) {
+    z-index: 2;
+}
+
+.member-avatar:nth-child(3) {
+    z-index: 1;
+    margin-right: 0;
+}
+
+.members-count {
+    font-weight: 500;
+    margin-right: 15px;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.waitlist-link {
+    background-color: #FFE066;
+    color: #000;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.waitlist-link:hover {
+    background-color: var(--accent);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+/* Responsive styles for the members badge */
+@media (max-width: 768px) {
+    .members-badge {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 12px;
+    }
+    
+    .member-avatars {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+    
+    .members-count {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .members-badge {
+        flex-direction: column;
+        border-radius: 25px;
+        padding: 15px;
+    }
+    
+    .members-count {
+        margin-right: 0;
+        margin-bottom: 12px;
     }
 } 

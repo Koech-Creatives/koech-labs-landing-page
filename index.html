@@ -27,7 +27,7 @@
                 <li><a href="#how-it-works">How it works</a></li>
                 <li><a href="#benefits">Benefits</a></li>
             </ul>
-            <a href="#cta" class="try-now-button">Try Now <i class="fas fa-arrow-right"></i></a>
+            <a href="https://frames-koech-labs.onrender.com/" class="try-now-button" target="_self">Try Now <i class="fas fa-arrow-right"></i></a>
             <button class="mobile-menu-btn">
                 <span></span>
                 <span></span>
@@ -38,15 +38,14 @@
 
     <main>
         <section class="hero-section">
-            <div class="waitlist-badge">
-                <div class="badge-dots">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
+            <div class="members-badge">
+                <div class="member-avatars">
+                    <img src="images/profile/member1.jpg" alt="Member" class="member-avatar" onerror="this.src='https://i.pravatar.cc/100?img=1'">
+                    <img src="images/profile/member2.jpg" alt="Member" class="member-avatar" onerror="this.src='https://i.pravatar.cc/100?img=2'">
+                    <img src="images/profile/member3.jpg" alt="Member" class="member-avatar" onerror="this.src='https://i.pravatar.cc/100?img=3'">
                 </div>
-                <span>Join 3 Million+ others on the waitlist</span>
+                <span class="members-count">Join 3k+ members</span>
+                <!-- <a href="#waitlist-container" class="waitlist-link">Join Waitlist <i class="fas fa-arrow-right"></i></a> -->
             </div>
             
             <div class="hero-content">
@@ -72,6 +71,15 @@
                 </h1>
                 <p class="subheadline">Your Content Creation Workflow, Simplified</p>
                 <!-- <a href="#cta" class="cta-button">Get Started</a> -->
+            </div>
+            
+            <div id="waitlist-container" class="waitlist-container">
+                <div class="waitlist-form">
+                    <form id="waitlist-form" onsubmit="return submitWaitlist(event)">
+                        <input type="email" id="waitlist-email" placeholder="Enter Your Email" required>
+                        <button type="submit" class="waitlist-button">Get notified</button>
+                    </form>
+                </div>
             </div>
             
             <div class="mockup-container">
