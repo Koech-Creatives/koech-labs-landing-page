@@ -5,6 +5,7 @@ services:
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     # This is a static site, so we don't need a startCommand
+    startCommand: ""
     rootDir: .
     envVars:
       - key: NODE_VERSION
