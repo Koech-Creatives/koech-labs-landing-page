@@ -1,7 +1,7 @@
 services:
   - type: web
     name: koech-labs-landing
-    env: static
+    runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     # This is a static site, so we don't need a startCommand
