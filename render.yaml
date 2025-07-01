@@ -1,15 +1,12 @@
 services:
-  - type: web
+  - type: static
     name: koech-labs-landing
-    runtime: static
     buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    # This is a static site, so we don't need a startCommand
-    startCommand: ""
-    rootDir: .
+    publishPath: ./dist
+    pullRequestPreviewsEnabled: true
     envVars:
       - key: NODE_VERSION
-        value: 16
+        value: 18
     routes:
       - type: rewrite
         source: /*
@@ -17,4 +14,4 @@ services:
     headers:
       - path: /*
         name: Cache-Control
-        value: no-cache 
+        value: public, max-age=0, must-revalidate 
