@@ -89,9 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Social icons animation
-    const socialIcons = document.querySelectorAll('.social-icons .icon');
+    // Hero section and social icons initialization
     const heroSection = document.querySelector('.hero-section');
+    const socialIcons = document.querySelectorAll('.social-icons .icon');
     
     // Function to ensure icons are not clustered in the center
     const redistributeIcons = () => {
@@ -412,39 +412,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animate elements on page load
     const animateOnLoad = () => {
         const heroContent = document.querySelector('.hero-content');
-        const waitlistBadge = document.querySelector('.waitlist-badge');
+        const waitlistBadge = document.querySelector('.waitlist-badge') || document.querySelector('.members-badge');
         const mockupContainer = document.querySelector('.mockup-container');
         
         setTimeout(() => {
-            waitlistBadge.style.opacity = '1';
-            waitlistBadge.style.transform = 'translateY(0)';
+            if (waitlistBadge) {
+                waitlistBadge.style.opacity = '1';
+                waitlistBadge.style.transform = 'translateY(0)';
+            }
         }, 300);
         
         setTimeout(() => {
-            heroContent.style.opacity = '1';
-            heroContent.style.transform = 'translateY(0)';
+            if (heroContent) {
+                heroContent.style.opacity = '1';
+                heroContent.style.transform = 'translateY(0)';
+            }
         }, 600);
         
         setTimeout(() => {
-            mockupContainer.style.opacity = '1';
-            mockupContainer.style.transform = 'translateY(0)';
+            if (mockupContainer) {
+                mockupContainer.style.opacity = '1';
+                mockupContainer.style.transform = 'translateY(0)';
+            }
         }, 900);
         
-        // Animate dots in waitlist badge
+        // Animate dots in waitlist badge (only if they exist)
         const dots = document.querySelectorAll('.badge-dots .dot');
-        let activeDotIndex = 0;
-        
-        setInterval(() => {
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[activeDotIndex].classList.add('active');
-            activeDotIndex = (activeDotIndex + 1) % dots.length;
-        }, 2000);
+        if (dots.length > 0) {
+            let activeDotIndex = 0;
+            
+            setInterval(() => {
+                dots.forEach(dot => dot.classList.remove('active'));
+                if (dots[activeDotIndex]) {
+                    dots[activeDotIndex].classList.add('active');
+                }
+                activeDotIndex = (activeDotIndex + 1) % dots.length;
+            }, 2000);
+        }
     };
     
     // Add initial styles for animation
     const setupAnimations = () => {
         const heroContent = document.querySelector('.hero-content');
-        const waitlistBadge = document.querySelector('.waitlist-badge');
+        const waitlistBadge = document.querySelector('.waitlist-badge') || document.querySelector('.members-badge');
         const mockupContainer = document.querySelector('.mockup-container');
         
         if (heroContent) {
@@ -470,7 +480,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', animateOnLoad);
 
     // Hero icons hover effect
-    const heroSection = document.querySelector('.hero-section');
     const icons = document.querySelectorAll('.hero-icons .icon');
     const maxDistance = 200; // The maximum distance to react to the mouse
 
@@ -557,10 +566,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Waitlist form submission
     window.submitWaitlist = function(event) {
+        console.log('*** WAITLIST FORM SUBMITTED ***');
+        
         event.preventDefault();
         
         const emailInput = document.getElementById('waitlist-email');
+        if (!emailInput) {
+            console.error('Email input not found');
+            return false;
+        }
+        
         const email = emailInput.value.trim();
+        console.log('Email value:', email);
         
         if (!email) {
             alert('Please enter your email address');
@@ -574,35 +591,55 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
         
-        // Send the email to n8n webhook
-        const n8nWebhookUrl = 'https://your-n8n-instance.com/webhook/waitlist'; // Replace with your actual n8n webhook URL
-        
         // Show loading state
         const waitlistButton = document.querySelector('.waitlist-button');
+        if (!waitlistButton) {
+            console.error('Waitlist button not found');
+            return false;
+        }
+        
         const originalButtonText = waitlistButton.innerHTML;
         waitlistButton.disabled = true;
         waitlistButton.innerHTML = 'Submitting...';
+        
+        // Use the working webhook URL from curl tests
+        const n8nWebhookUrl = 'https://n8n-service-u0dv.onrender.com/webhook/waitlist';
+        
+        console.log('Sending to webhook:', n8nWebhookUrl);
+        
+        // Use the same payload structure that worked in curl
+        const payload = {
+            email: email,
+            source: 'koech-labs-landing',
+            timestamp: new Date().toISOString()
+        };
+        
+        console.log('Payload:', JSON.stringify(payload));
         
         fetch(n8nWebhookUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                email: email,
-                source: 'koech-labs-landing',
-                timestamp: new Date().toISOString()
-            })
+            body: JSON.stringify(payload)
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            console.log('Response status:', response.status);
+            console.log('Response OK:', response.ok);
+            
+            // Check if response is successful (200-299)
+            if (response.status >= 200 && response.status < 300) {
+                return response.text();
+            } else {
+                throw new Error(`HTTP ${response.status}`);
             }
-            return response.json();
         })
-        .then(data => {
+        .then(responseText => {
+            console.log('Response text:', responseText);
+            
+            // Success - the webhook responded with 200
             // Hide the form
-            const waitlistForm = document.getElementById('waitlist-form');
+            const waitlistForm = document.getElementById('waitlist-form') || document.getElementById('direct-waitlist-form');
             const formParent = waitlistForm.parentElement;
             
             waitlistForm.style.display = 'none';
@@ -617,7 +654,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             formParent.appendChild(successMessage);
-            console.log('Waitlist signup successful:', email);
         })
         .catch(error => {
             console.error('Error submitting waitlist form:', error);

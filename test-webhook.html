@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        input {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>n8n Webhook Testing</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Direct Webhook Call</h2>
+        <p>This will send a direct POST request to your webhook.</p>
+        <button id="test1">Run Test 1</button>
+        <div id="result1" class="result">Results will appear here...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Form Submission</h2>
+        <p>This simulates your waitlist form submission.</p>
+        <form id="test-form">
+            <input type="email" id="test-email" placeholder="Enter email" value="test@example.com">
+            <button type="submit">Submit Form</button>
+        </form>
+        <div id="result2" class="result">Results will appear here...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Alternative Webhook Service</h2>
+        <p>This tests with webhook.site to rule out n8n issues.</p>
+        <button id="test3">Run Test 3</button>
+        <div id="result3" class="result">Results will appear here...</div>
+    </div>
+
+    <script>
+        // Test 1: Direct webhook call
+        document.getElementById('test1').addEventListener('click', function() {
+            const result = document.getElementById('result1');
+            result.innerHTML = 'Sending request...';
+            
+            fetch('https://n8n-service-u0dv.onrender.com/webhook/waitlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: 'test@example.com',
+                    source: 'test-page-direct',
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => {
+                result.innerHTML += `<br>Response status: ${response.status}`;
+                return response.text();
+            })
+            .then(text => {
+                result.innerHTML += `<br>Response: ${text}`;
+            })
+            .catch(error => {
+                result.innerHTML += `<br>Error: ${error.message}`;
+            });
+        });
+        
+        // Test 2: Form submission
+        document.getElementById('test-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const result = document.getElementById('result2');
+            result.innerHTML = 'Submitting form...';
+            
+            const email = document.getElementById('test-email').value;
+            
+            fetch('https://n8n-service-u0dv.onrender.com/webhook/waitlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    source: 'test-page-form',
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => {
+                result.innerHTML += `<br>Response status: ${response.status}`;
+                return response.text();
+            })
+            .then(text => {
+                result.innerHTML += `<br>Response: ${text}`;
+            })
+            .catch(error => {
+                result.innerHTML += `<br>Error: ${error.message}`;
+            });
+        });
+        
+        // Test 3: Alternative webhook service
+        document.getElementById('test3').addEventListener('click', function() {
+            const result = document.getElementById('result3');
+            result.innerHTML = 'Sending to webhook.site...';
+            
+            // Replace with a webhook.site URL for testing
+            const webhookSiteUrl = 'https://webhook.site/5e8bf33f-df92-4892-8bc9-cc12ec85657e';
+            
+            fetch(webhookSiteUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: 'test@example.com',
+                    source: 'test-page-webhook-site',
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => {
+                result.innerHTML += `<br>Response status: ${response.status}`;
+                return response.text();
+            })
+            .then(text => {
+                result.innerHTML += `<br>Response: ${text.substring(0, 100)}${text.length > 100 ? '...' : ''}`;
+            })
+            .catch(error => {
+                result.innerHTML += `<br>Error: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+</html> 
