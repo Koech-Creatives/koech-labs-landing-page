@@ -383,17 +383,6 @@ section {
     color: var(--text-muted);
 }
 
-.hero-content .product-description {
-    position: relative;
-    z-index: 20;
-    font-size: 1.1rem;
-    max-width: 800px;
-    margin: 0 auto 2.5rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    opacity: 0.9;
-}
-
 .cta-button {
     background-color: var(--accent);
     color: var(--text-light);
