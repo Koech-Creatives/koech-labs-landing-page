@@ -1,13 +1,13 @@
-/* Custom cursor CSS */
-* {
-    cursor: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSwxIEwyMywxMiBMMTAsMTQgTDEsMjMgeiIgZmlsbD0iI0ZGNDQ5NCIvPjwvc3ZnPg==') 1 1, pointer !important;
-}
-
 /* Google font import */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+
+/* Custom cursor CSS */
+* {
+    cursor: url('data:image/svg+xml;utf8,<svg width="24" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1,1 Q20,12 8,14 Q1,23 1,1 z" fill="%23FF4940"/></svg>') 1 1, pointer !important;
+}
 
 /* Apply font to all text elements */
 body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, div {
     font-family: 'Montserrat', sans-serif !important;
-    font-weight: 900 !important;
+    font-weight: 600 !important;
 } 
